@@ -51,7 +51,7 @@ pub fn init_db(builder: &mut PgTempDBBuilder) -> TempDir {
     let mut cmd: Command;
     if current_user_is_root() {
         cmd = Command::new("sudo");
-        cmd.args(["-u", "postgres"]).arg("initdb");
+        cmd.args(["-u", "postgres"]).arg("/usr/lib/postgresql/14/bin/initdb");
     } else {
         cmd = Command::new("initdb");
     }
@@ -88,7 +88,7 @@ pub fn run_db(temp_dir: &TempDir, mut builder: PgTempDBBuilder) -> Child {
     let mut pgcmd: Command;
     if current_user_is_root() {
         pgcmd = Command::new("sudo");
-        pgcmd.args(["-u", "postgres"]).arg("postgres");
+        pgcmd.args(["-u", "postgres"]).arg("/usr/lib/postgresql/14/bin/postgres");
     } else {
         pgcmd = Command::new("postgres");
     };
@@ -131,7 +131,7 @@ pub fn run_db(temp_dir: &TempDir, mut builder: PgTempDBBuilder) -> Child {
         // expense of adding Cargo dependency)
         //
         // alternatively just use psql
-        let mut dbcmd = Command::new("createdb");
+        let mut dbcmd = Command::new("/usr/lib/postgresql/14/bin/createdb");
         dbcmd
             .args(["--host", "localhost"])
             .args(["--port", &port.to_string()])
